@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Card from "./Card";
+import Options from "./Options";
 
 const Profile = () => {
   // State to store the fetched image URL
@@ -14,6 +15,8 @@ const Profile = () => {
   const [level, setLevel] = useState(null);
   // State to store the fetched Rank
   const [rank, setRank] = useState(null);
+  // State to store the fetched Badge's data
+  const [badge, setBadge] = useState([]);
 
   // Array to store the point, level and rank
   let dataArray = [
@@ -99,6 +102,23 @@ const Profile = () => {
     }
   };
 
+  // Function to fetch Badge data form the apip
+  const fetchBadge = async () => {
+    try {
+      fetch(
+        "https://staging.questprotocol.xyz/api/entities/e-0000000000/users/u-a2399489-9cd0-4c94-ad12-568379202b08/badges",
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          setBadge(response.data);
+        })
+        .catch((err) => console.error(err));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   useEffect(() => {
     // Call the fetchImage function
     fetchImage();
@@ -108,14 +128,25 @@ const Profile = () => {
 
     // Call the fetchRank function
     fetchRank();
+
+    // Call the fetchBadge function
+    fetchBadge();
   }, []);
 
   dataArray[0].value = point;
   dataArray[2].value = level;
   dataArray[1].value = rank;
 
+  if (loading) {
+    return (
+      <h1 className='text-white flex justify-center items-center font-semibold text-3xl'>
+        Loading...
+      </h1>
+    );
+  }
+
   return (
-    <div className='bg-white rounded-t-xl'>
+    <div className='bg-white rounded-t-xl max-h-screen h-[80vh]'>
       <div className='flex items-center justify-center'>
         <div className='w-[100px] drop-shadow-xl p-0.5 border rounded-full absolute bg-white'>
           <img src={imageUrl} alt='Profile Picture' />
@@ -132,6 +163,9 @@ const Profile = () => {
             <Card elem={elem} />
           </Fragment>
         ))}
+      </div>
+      <div>
+        <Options badge={badge} />
       </div>
     </div>
   );
