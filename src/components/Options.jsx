@@ -31,7 +31,7 @@ const Options = ({ badge }) => {
         </li>
       </ul>
       {toggle === 1 ? (
-        <div className='grid grid-cols-3 sm:grid-cols-7 gap-x-14 mt-4 gap-y-3'>
+        <div className='grid grid-cols-3 sm:grid-cols-7 overflow-y-scroll h-[200px] gap-x-14 mt-4 gap-y-3'>
           {badge?.map((elem) => (
             <Fragment key={elem.id}>
               <Badge imageUrl={elem.imageUrl} elem={elem} />

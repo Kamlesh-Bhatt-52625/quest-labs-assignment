@@ -157,7 +157,7 @@ const Profile = () => {
           Rich Explorer
         </p>
       </div>
-      <div className='flex m-4 justify-between'>
+      <div className='flex m-4 justify-around'>
         {dataArray?.map((elem) => (
           <Fragment key={elem.id}>
             <Card elem={elem} />
